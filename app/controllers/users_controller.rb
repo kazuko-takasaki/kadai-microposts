@@ -3,12 +3,12 @@ class UsersController < ApplicationController
   
   def index
     @users = User.order(id: :desc).page(params[:page]).per(25)
-    @microposts = @user.microposts.order(id: :desc).page(params[:page])
-    counts(@user)
   end
 
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.order(id: :desc).page(params[:page])
+    counts(@user)
   end
 
   def new
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def create
-        @user = User.new(user_params)
+      @user = User.new(user_params)
     if @user.save
       flash[:success] = 'ユーザを登録しました。'
       redirect_to @user
@@ -24,6 +24,12 @@ class UsersController < ApplicationController
       flash.now[:danger] = 'ユーザの登録に失敗しました。'
       render :new
     end
+  end
+  
+  def likes
+    @user = User.find(params[:id])
+    @likes = @user.likes.page(params[:page])
+    counts(@user)
   end
   
     private

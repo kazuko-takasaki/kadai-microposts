@@ -5,13 +5,14 @@ class ApplicationController < ActionController::Base
     private
     
     def require_user_logged_in
-        unless logge_in?
+        unless logged_in?
             redirect_to login_url
         end
     end
     
   def counts(user)
     @count_microposts = user.microposts.count
+    @count_likes = user.likes.count
   end
   
 end
